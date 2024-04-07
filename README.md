@@ -2,7 +2,7 @@
 
 ## Overview
 
-This paper investigates the income ineqaulity in United States using data from various surveys.
+This paper investigates the income ineqaulity in United States after the 2008 financial crash using data from various surveys.
 
 ## File Structure
 

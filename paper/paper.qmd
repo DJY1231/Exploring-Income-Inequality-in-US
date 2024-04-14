@@ -1,221 +1,290 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
-author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
+title: "Exploring Income Inequality in US after financial crises: Analysis"
+subtitle: "Insights from 2002 to 2019"
+author: "Dong Jun Yoon"
+thanks: "Code and data are available at: https://github.com/DJY1231/Exploring-Income-Inequality-in-US.git"
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "This paper investigates income inequality in United States from 2002 to 2019 using data from various surveys. Through exploratory data analysis and regression modeling, we uncover increasing income inequality trends over time and variations across different provinces. Our findings reveal nuanced relationships between temporal trends and regional disparities, and income distribution dynamics. Through rigorous analysis, we uncover two key findings: a consistent rise in income inequality over time, significant regional disparities across provinces. Understanding these dynamics is important for policymakers to develop targeted strategies aimed at mitigating income inequality and promoting social and economic equity in United States."
 format: pdf
 number-sections: true
 bibliography: references.bib
 ---
 
-```{r}
-#| include: false
-#| warning: false
-#| message: false
-
-library(tidyverse)
-library(palmerpenguins)
-```
-
-
 # Introduction
+Income inequality is a pressing issue not only in the United States but also globally. It pertains to the uneven distribution of income across a population, spotlighting disparities in financial well-being. Unlike wealth, which accounts for assets such as homes and stocks, income inequality focuses on earnings from various sources—wages, salaries, interest from savings, stock dividends, rental income, and profits from selling assets at a higher price than their purchase cost. This distinction is crucial for understanding the different facets of economic inequality. Therefore understanding inequality may provide insights for policymakers or researchers in contributing the problem. 
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
+This paper aims to investigate the dynamics of income inequality in the United States, especially focusing on the period from 2002 to 2019. Using the dataset provided by United States Census and World Inequality Database (WID), we will fully investigate income trends across the social class, top 1%, top 10% and bottom 50% of income inequality. Moreover, will be considering variables such as year, social class, and race to find out the correlation between these factors. 
 
-The remainder of this paper is structured as follows. @sec-data....
+Even though researchers has studied on income inequality in the United States, there are still remaining income gap between individual firms who are living in the United States. To efficiently investigate this income gap, our paper would focus on exploring datasets and multiple linear regression modeling to find out the full details (trends, patterns) about income inequality that is occurring in the United States. 
+
+The paper is structured as following: Section 2 introduces the data used for analysis and findings, including the variables of interest. Section 3 introduces the linear regression model to examine the correlation between time (year) and social class to investigate income inequality in the United States. Section 4 introduces the full analysis of the table which will include the summary. Section 5 may discuss about the findings that we investigated and also talk about the weaknesses of this paper and its next steps.
 
 
+## Estimand
+The study's goal is to evaluate the relationship between time (year) and income inequality in the United States, focusing on how changes over the years affect income disparity. It aims to assess the impact of each year on income inequality, considering other constant variables, and to examine trends from 2002 to 2019.
+
+Additionally, the study explores the influence of income inequality and its interaction with time, race, and social class. By examining the coefficients such as year and income in our regression model, we aim to understand the differences in income inequality between different race and social class, and see how it changes over time.
+
+Thus revealing the complex interplay between time, race, social class, and income disparity in the United States.
 
 # Data {#sec-data}
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+## Data Source
+The first and second data is gathered from the United States Census Bureau, where the first dataset introduces the income share by each social class over time: 2002 to 2019 in the United States. The second data illustrates the median household income based on race and year. 
+
+## Data Measurement
+The dataset provides information that offers insights into the income trends in the United States. The y-axis represents the income share, measured in dollars (%). The x-axis corresponds to the years from 2002 to 2019, representing the total income for each year.
+
+Data cleaning and analysis were conducted using the base statistical programming language R (R Core Team 2023), and the core components such as tidyverse (Wickham et al. 2019), ggplot2 (Wickham 2016), dplyr (Wickham et al. 2023), readr (Wickham, Hester, and Bryan 2024), tibble (Müller and Wickham 2023),stringr (Wickham 2023), haven (Wickham, Miller, and Smith 2023), janitor (Firke 2023), knitr (Xie 2023).
+
+## Variables of Interest
+```{r}
+# Load the necessary library
+library(knitr)
+
+# Load the data from CSV
+data <- read.csv("Income_inequality_social_class.csv")
+
+# Extracting the first ten rows for the table
+data_subset <- head(data, 40)
+
+# Use kable to create a nicely formatted table in Markdown
+kable(data_subset, caption = "First 40 rows of Income Share by Social Class Over Time: 2002 to 2019 in the United States.", format = "markdown")
+
+```
+Table 1: Extracting the first 40 rows of Income Share by social class over time: 2002 to 2019 in the United States.
+
+1. Location: The model uses all the dataset collected across the country of the United States. This geographic coverage enables us to access different social class with different income level.   
+
+2. Social Class: The dataset contains information on income levels for each social class, including Top 1% income, Bottom 50% income, and Top 10% income. These income levels provide detailed insights into income distribution across different years and shares of total income in the United States.
+
+3. Year: The dataset displays years from 2002 to 2021, covering a range that allows for the exploration of long-term income trends and changes over time. This period aids in analyzing income dynamics before and after the Great Recession, offering insights into patterns of income distribution.
+
+4. Share of total income: The dataset likely represent the share of total income that the specified social class (e.g., "Top 1% income") earns in the United States for the given year. For instance, a value of 0.1610 for "Top 1% income" in the USA for 2002 could mean that the top 1% of earners received 16.10% of the total income generated in the USA that year.This data can be used to analyze trends in income distribution and inequality within the United States over time, examining how the income shares of different segments (like the top 1%, top 10%, and bottom 50%) of the population change.
+
+## Data Visualization
+```{r}
+library(ggplot2)
+
+# Load the data
+data <- read.csv("Income_inequality_social_class.csv")
+
+# Rename the 'Unnamed: 3' column to 'Income Share'
+colnames(data)[4] <- "Income Share"
+
+# Plotting the data
+ggplot(data, aes(x = Year, y = `Income Share`, color = Social_Class, group = Social_Class)) +
+  geom_line() +
+  facet_wrap(~Country, scales = 'free_y') +
+  labs(title = "Income Share by Social Class Over Time",
+       x = "Year",
+       y = "Income Share (%)",
+       color = "Social Class") +
+  theme_minimal()
+
+```
+Figure 1: Income Share by Social Class Over Time: 2002 to 2019 in the United States.
+
+Figure 1 illustrates the changing dynamics of income distribution across different social classes in the United States from 2002 to 2019. Specifically, the data show an upward trend in the income share for the top 1% and top 10% of earners, suggesting that these groups have been capturing a progressively larger portion of the total income pie over the examined period. In contrast, the bottom 50% of earners experienced a decline in their income share, indicating that their relative economic position has decreased during the same time frame. The consistent increase in income share for the top 1% and top 10% suggests a concentration of wealth at the top, a classic indicator of growing income inequality. This trend raises concerns about the economic well-being of the majority, as the bottom 50%'s shrinking share implies that a significant portion of the population is benefiting less from overall economic growth. 
 
 ```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
+# Load necessary libraries
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(scales)
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
+# Read the CSV file into an R data frame
+income_data <- read_csv("Median_Income_Race.csv")
+
+# Convert Median_Income to a numeric value after removing commas
+income_data <- income_data %>%
+  mutate(
+    Median_Income = as.numeric(gsub(",", "", Median_Income)),
+    Year = as.integer(Year)
+  )
+
+# Remove rows with NA values in Year or Median_Income
+income_data <- na.omit(income_data)
+
+# Order the data by Year
+income_data <- income_data %>%
+  arrange(Year, Race)
+
+# Generate a sequence of years at 5-year intervals
+years_breaks <- seq(from = floor(min(income_data$Year)/5)*5, # Round down to nearest multiple of 5
+                    to = ceiling(max(income_data$Year)/5)*5, # Round up to nearest multiple of 5
+                    by = 5)
+
+# Create a line chart with years displayed at 5-year intervals
+median_income_plot <- ggplot(income_data, aes(x = Year, y = Median_Income, group = Race, color = Race)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = years_breaks) + # Set x-axis breaks at 5-year intervals
+  scale_y_continuous(labels = label_comma()) + # Format y-axis labels to avoid scientific notation
   theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
+  labs(title = "Median Income by Race Over the Years",
+       x = "Year",
+       y = "Median Income (Dollars)",
+       color = "Race") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1), # Rotate x-axis labels for readability
+        text = element_text(size = 12))
+
+# Print the plot
+print(median_income_plot)
+
+# Optionally save the plot to a file
+ggsave("median_income_plot.png", median_income_plot, width = 10, height = 8)
+
 ```
+Figure 2: Trend of Median Income by Race over the year: 2002 to 2019 in the United States.
 
-Talk more about it.
+The second set of data, sourced from the United States Census Bureau, displays the median household income segmented by race and year. As depicted in Figure 2, the trend of median income by race from 2002 to 2019 generally shows an upward trajectory. However, starting from 2007, a downward trend is observable across all racial groups, likely influenced by the financial crisis spanning December 2007 to June 2009. This period witnessed a marked decrease in median income across most racial categories, extending over a five-year span or longer. Notably, Asian and White households recovered more rapidly than their Hispanic and Black counterparts, indicating a potential exacerbation of income inequality among races.
 
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
+For instance, between 2007 and 2019, the median income for Asians increased by 23.8%, from $90,290 to $111,800. In contrast, Black households saw a more modest increase of 11.7%, from $46,320 to $51,750. Examining the five years post-recession (2007 to 2011), Asian income decreased by 8.7%, whereas Black income declined by 11.9%. This comparative analysis reveals a pronounced disparity: Asian households experienced a smaller reduction in income post-recession and achieved a quicker and greater recovery compared to Black households.
 
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
-#| echo: false
-#| warning: false
-#| message: false
+Such trends underscore a notable income inequality between racial groups, influenced by various factors including workplace and environmental contexts. While individual circumstances vary, the overarching data suggests persistent disparities in income recovery and growth among different races, highlighting a critical area for policy intervention and societal attention.
 
-analysis_data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
-
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
-```
-
-Talk way more about it. 
-
-
+This information provides additional insight into income inequality among different racial groups. While Figure 1 focuses solely on social classes, this could offer a more detailed analysis of income disparities.
 
 # Model
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
+In this section, we will discuss the Bayesian model that will be used in the analysis. 
 
 ## Model set-up
+The Bayesian linear regression model is formulated as follows:
 
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
+$$
+\text{Share_of_total_income (Y)} = \beta_0 + \beta_1 \cdot \text{Year} + \beta_2 \cdot \text{Social_Class} + \beta_3 \cdot \text{Period} + \beta_4 \cdot (\text{Year} \times \text{Social_Class}) + \beta_5 \cdot (\text{Social_Class} \times \text{Period}) + \varepsilon
+$$
+We run the model in R (R Core Team 2023) using the rstanarm package of Goodrich et al. (2022). We use the default priors from rstanarm.
 
 ### Model justification
 
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
+We expect a capture the relationship between the response variable, Y, representing the share of income based on each social class.
+- $\beta_0$ is the overall intercept.
+- $\beta_1$ represents the trend of income share over time.
+- $\beta_2$ represents the differences in income share across different social classes.
+- $\beta_3$ represents the impact of the economic period on income share.
+- $\beta_4$ and $\beta_5$ are interaction terms that capture the nuanced effects of time and economic periods on different social classes.
+- $\varepsilon$ is the error term.
 
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
+The choice of priors for the coefficients, $\beta_0$, $\beta_1$, and $\beta_3$, $\beta_4$, $\beta_5$ as Normal distributions with mean 0 and a standard deviation of 2.5 reflects a weak prior assumption. This indicates that there are no strong preconceptions regarding the size or direction of their impacts.
 
 # Results
-
-Our results are summarized in @tbl-modelresults.
-
+The regression results are as following:
 ```{r}
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
+# Load necessary libraries
+if (!require(dplyr)) install.packages("dplyr")
+if (!require(stargazer)) install.packages("stargazer")
+if (!require(performance)) install.packages("performance")
 
-library(rstanarm)
+library(dplyr)
+library(stargazer)
+library(performance)
 
-first_model <-
-  readRDS(file = here::here("models/first_model.rds"))
+# Read the dataset
+data <- read.csv("Income_inequality_social_class.csv")
+
+# Define the periods based on the year
+data <- data %>%
+  mutate(Period = case_when(
+    Year >= 2002 & Year <= 2007 ~ "Pre-Recession",
+    Year > 2007 & Year <= 2009 ~ "During-Recession",
+    Year > 2009 & Year <= 2019 ~ "Post-Recession",
+    TRUE ~ as.character(NA) # for years outside the specified range
+  )) %>%
+  mutate(Period = factor(Period))
+
+# Fit the linear regression model with interactions
+model <- lm(Share_of_total_income ~ Year + Social_Class + Period + Year:Social_Class + Social_Class:Period, data = data)
+
+# Get the summary of the model
+model_summary <- summary(model)
+
+# Calculate RMSE
+rmse_value <- rmse(model)
+
+# Create the table with stargazer
+stargazer(model, type = "text", 
+          add.lines = list(
+            c("Num. Obs.", nrow(data)),
+            c("RMSE", format(rmse_value, digits=2)),
+            c("AIC", format(AIC(model), digits=2)),
+            c("BIC", format(BIC(model), digits=2))
+          ))
+
 ```
+Table 2: Summary results for the share of total income model
 
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
-#| warning: false
+This table summarize the output of a regression model that estimates the share of total income based on different predictors: year, social class (top 1% income and top 10% income), periods (pre- and post-recession), and interaction terms between these predictors.
 
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
-)
-```
+Social Class (Top 1% income and Top 10% income): Both coefficients are negative and statistically significant (as indicated by the three asterisks, typically denoting p < 0.001). This suggests that compared to the reference social class (presumably the rest of the population), the top 1% and the top 10% have a significantly lower share of the total income.
 
+PeriodPost-Recession and PeriodPre-Recession: The coefficients for both are very close to zero and are likely not statistically significant, indicating no change in the share of total income during these periods compared to the reference period (possibly the recession period).
 
+Interaction terms: The positive and significant interaction terms for Year:Social_ClassTop 1% income and Year:Social_ClassTop 10% income suggest that the share of total income for these social classes is increasing annually at a rate faster than the rest of the population.
 
+Constant: The constant term is positive but not statistically significant, suggesting that for the base category (which is not detailed in the summary), the share of total income is not significantly different from zero.
 
 # Discussion
 
-## First discussion point {#sec-first-point}
+## Findings
+This paper examined income inequality in United States from 2002 to 2019, especially analyzing the income inequality before and after the great recession (2007-2009). Throughout the data analysis and regression modeling, we found that income inequality has potentially increased over time and the income gap between each social classes has also increased. 
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+Comparing income inequality trends pre and post recession: 
 
-## Second discussion point
+Before the recession: the gap was widening, as evidenced by significant gains for the top earners and losses for the bottom 50%. 
 
-## Third discussion point
+After the Recession: The trend of widening inequality continued and possibly accelerated, with the top groups seeing substantial increases in their income shares while the bottom 50% experienced a decline. 
+
+Throughout the discussion part, we will now provide detailed points of our results in the following sections.
+
+Additionally we could observe income inequality between different races. In result, Asian and White tend to have higher income comparison to Black and Hispanic. 
+
+## Comparing income inequality trends pre, during, and post recession in the United States: 
+Based on the analysis of Figure 1, we can find out the details about the changing dynamics of income distribution across different social classes in the United States from 2002 to 2019. Specifically, we can examine the trends that has occurred in income inequality before, during, and after the great recession in the United States. The data shows an upward trend in the income share for the top 1% and top 10% of earners, and a downward trend for the bottom 50%. This indicates that the top 1% and the top 10% group has more portion of the total income pie over the examined period and the bottom 50% group has less portion of the total income pie over the same time frame.
+
+This trend could be related to the financial crisis, where the economic recession, officially beginning in December 2007 and ending in June 2009. During this period, many businesses faced significant challenges, including reduced consumer spending, tightened credit conditions, and a decline in investments. During the recession, there was significant amount of job losses where the loss of jobs and income contributed to the decrease in personal income. 
+
+To assess the impact of the Great Recession, which spanned from late 2007 to mid-2009, we can divide the analysis into three phases: Pre-Recession (2002-2007), during the Recession (2007-2009), and Post-Recession (2009-2019). By comparing these periods, we aim to understand how this significant economic downturn influenced the distribution of income among these groups.
+
+Pre-Recession (2002-2007): During this period, the economy was generally expanding. The data show that the income share for the top earners (1% and 10%) was already on the rise, this indicates that the trends towards inequality began before the economic downturn. The income share of the top 1% increased by 14.2% during this time period, from 0.1610 to 0.1838. Furthermore, the income share of the top 10% has increased by 6.14% during this time period, from 0.4149 to 0.4404. On the other hand where the income share for the bottom 50% was on a decrease by 7.11%, from 0.1476 to 0.1371. This suggest that this group of people are less benefiting from overall economic growth. 
+
+During the Recession (2007-2009): Typically, recessions can disproportionately affect lower-income groups, but the specific impacts can vary. In this case, the income share of the top 1% decreased by 9.14% during the recession, from 0.1838 to 0.1670. This significant reduction suggests that the highest earners were not immune to the economic downturn, likely reflecting declines in investment income, real estate values, and high-paying jobs, which are common income sources for this group. The top 10% experienced a 3.61% decrease in their income share, from 0.4404 to 0.4245. While this group also felt the effects of the recession, the impact was less severe compared to the top 1%. This difference could be due to a broader diversification of income sources within this group or a slightly more resilient income structure compared to the very top earners. The bottom 50% saw a relatively minor decrease in their income share of 0.51%, from 0.1371 to 0.1364. This smaller change could indicate that the income sources for this group, often more reliant on wages rather than investments, did not fluctuate as dramatically as those for higher income groups. However, it's important to note that for individuals with lower income, even a small decrease can have a substantial impact on their living standards. The more significant decrease in income share for the top 1% temporarily narrowed the income inequality gap. However, the critical question for understanding long-term trends is how these groups' income shares rebounded in the post-recession recovery period.
+
+Post-Recession (2009-2019): The recovery phase is crucial for understanding whether the income distribution trends were a temporary response to the recession or part of a longer-term pattern. The income share of the top 1% earners continued to grow from 0.1670 to 0.1904, which represents a 14% increase in total income share. The top 10% earners also observed their income share increase from 0.4245 to 0.4567, a 7.58% rise in total income share. However, the bottom 50% experienced a decrease in their income share by 4.62%, from 0.1364 to 0.1301. While the income shares of top earners continued to grow, the bottom 50%'s share did not recover or even continued to fall, indicating a worsening of income inequality post-recession.The top 1% and top 10% of earners saw their share of total income increase significantly between 2009 and 2019. The top 1% experienced a 14% increase, and the top 10% saw a 7.58% rise. This growth suggests that these groups were able to recover from the recession and even enhance their economic standing, likely benefiting from the recovery in investment markets, real estate, and high-income employment sectors. However, the bottom 50% saw their share of total income decrease by 4.62%. This decline indicates that this group did not benefit from the economic recovery to the same extent as the higher income groups. In conclusion, increased income share for the top earners and decreased share for the bottom half suggest that income inequality worsened in the post-recession period. Where it indicates that the gap between the rich and the poor got widened.
+
+In conclusion, the depicted trends in Figure 1 suggest that income inequality has been widening over the years, with significant gains concentrated among the top earners and losses by the bottom half of the distribution. Comparing income inequality trends pre and post recession: Before the recession: the gap was widening, as evidenced by significant gains for the top earners and losses for the bottom 50%. After the Recession: The trend of widening inequality continued and possibly accelerated, with the top groups seeing substantial increases in their income shares while the bottom 50% experienced a decline. By comparing these trends, it's clear that the gap between the rich and the poor has indeed grown larger post-recession. The top earners not only recovered their losses but also gained a larger portion of the income share, while the bottom half saw a continual decline.
+
+## Asian and White are likely to earn more income compared to Black and Hispanic people. 
+Based on the analysis of Figure 2, we can find out the details about the trend of median income by race over the year: 2002 to 2019 in the United States. Specifically, we can examine the  income inequality among different racial groups that has occurred in the period of before, during, and after the great recession in the United States. As similar to figure 1, the income has increased before the great recession, however decrease during the recession, and covered after the recession over time. 
+
+In overall, figure 2 traces the median household income by race from 2002 to 2019, showing an overall increase but with a dip during the 2007 financial crisis, affecting all racial groups for at least five years. Asian and White households bounced back quicker than Hispanic and Black ones, suggesting growing racial income inequality. From 2007 to 2019, Asian median income rose by 23.8%, while Black households saw an 11.7% increase. Post-recession, Asian income fell by 8.7%, and Black income by 11.9%, revealing Asian households had a smaller decline and a faster recovery than Black households. These trends indicate persistent income disparities across racial lines, pointing to the need for targeted policy measures and societal engagement to address these inequalities.
+
 
 ## Weaknesses and next steps
+Bayesian multiple regression show weaknesses in these factors: 
+1. Model Complexity: Including multiple interaction terms can lead to a model that is too complex, potentially over fitting the data. This can make the model sensitive to small variations in the data and can reduce its predictive performance on new data.
+2. Sample Size: With Bayesian models, having a smaller sample size can be particularly problematic because the model's estimates can be heavily influenced by the priors. This could result in less reliable posterior distributions if the data isn't sufficient to overwhelm the prior beliefs.
 
-Weaknesses and next steps should also be included.
-
-\newpage
-
-\appendix
-
-# Appendix {-}
-
-
-# Additional data details
-
-# Model details {#sec-model-details}
-
-## Posterior predictive check
-
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
-
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
-
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
-```
-
-## Diagnostics
-
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-```{r}
-#| echo: false
-#| eval: true
-#| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
-
-plot(first_model, "trace")
-
-plot(first_model, "rhat")
-```
-
-
-
-\newpage
-
+Within the overall income analysis, there could be potential biases that could occur. For example for sample size for our model, the data may still have unobserved factors that may influence income inequality. These unobserved information could potentially change the estimates and results we have goten. 
 
 # References
+R Core Team. 2023. R: A Language and Environment for Statistical Computing. Vienna,
+Austria: R Foundation for Statistical Computing. https://www.R-project.org/.
 
+Xie, Yihui. 2023. Knitr: A General-Purpose Package for Dynamic Report Generation in r.
+https://yihui.org/knitr/.
 
+Wickham, Hadley, Jim Hester, and Jennifer Bryan. 2024. Readr: Read Rectangular Text Data.
+27. https://readr.tidyverse.org.
+
+Wickham, Hadley. 2016. Ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New
+York. https://ggplot2.tidyverse.org.
+
+Wickham, Hadley, Romain François, Lionel Henry, Kirill Müller, and Davis Vaughan. 2023. Dplyr: A Grammar of Data Manipulation. https://dplyr.tidyverse.org.
+
+Wickham, Hadley, and Dana Seidel. 2022. scales: Scale Functions for Visualization. https://CRAN.R-project.org/package=scales.
+
+Bureau, U. C. (2023, September 12). Historical income tables: Income inequality. Census.gov. https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-income-inequality.html 

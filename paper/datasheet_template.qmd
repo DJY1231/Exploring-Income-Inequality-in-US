@@ -1,157 +1,290 @@
 ---
-title: "Datasheet for 'A dataset'"
-subtitle: "My subtitle if needed"
-author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
-date: "`r Sys.time()`"
-date-format: "D MMMM YYYY"
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+title: "Exploring Income Inequality in US after and before financial crises: Analysis"
+subtitle: "Insights from 2002 to 2019"
+author: "Dong Jun Yoon"
+thanks: "Code and data are available at: https://github.com/DJY1231/Exploring-Income-Inequality-in-US.git"
+date: today
+date-format: long
+abstract: "This paper investigates income inequality in the United States from 2002 to 2019 using data from the United States Census and the World Inequality Database (WID). Throughout the paper, we will explore trends in income inequality, examining whether it is increasing or decreasing over time, and how the Great Recession of 2007-2009 affected income inequality. We will utilize data analysis and regression modeling to investigate these trends. Investigating these trends is significant, as it could assist policymakers or the government in developing strategies that could decrease the inequalities occurring within the country. As a result, this report may be used to help promote social and economic equity in the United States."
 format: pdf
 number-sections: true
 bibliography: references.bib
 ---
 
-Extract of the questions from @gebru2021datasheets.
+# Introduction
+Income inequality is a pressing issue not only in the United States but also globally. It pertains to the uneven distribution of income across a population, spotlighting disparities in financial well-being. Unlike wealth, which accounts for assets such as homes and stocks, income inequality focuses on earnings from various sources—wages, salaries, interest from savings, stock dividends, rental income, and profits from selling assets at a higher price than their purchase cost. This distinction is crucial for understanding the different facets of economic inequality. Therefore understanding inequality may provide insights for policymakers or researchers in contributing the problem. 
+
+This paper aims to investigate the dynamics of income inequality in the United States, especially focusing on the period from 2002 to 2019. Using the dataset provided by United States Census and World Inequality Database (WID), we will fully investigate income trends across the social class, top 1%, top 10% and bottom 50% of income inequality. Moreover, will be considering variables such as year, social class, and race to find out the correlation between these factors. 
+
+Even though researchers has studied on income inequality in the United States, there are still remaining income gap between individual firms who are living in the United States. To efficiently investigate this income gap, our paper would focus on exploring datasets and multiple linear regression modeling to find out the full details (trends, patterns) about income inequality that is occurring in the United States. 
+
+The paper is structured as following: Section 2 introduces the data used for analysis and findings, including the variables of interest. Section 3 introduces the linear regression model to examine the correlation between time (year) and social class to investigate income inequality in the United States. Section 4 introduces the full analysis of the table which will include the summary. Section 5 may discuss about the findings that we investigated and also talk about the weaknesses of this paper and its next steps.
+
+## Estimand
+The study's goal is to evaluate the relationship between time (year) and income inequality in the United States, focusing on how changes over the years affect income disparity. It aims to assess the impact of each year on income inequality, considering other constant variables, and to examine trends from 2002 to 2019.
+
+Additionally, the study explores the influence of income inequality and its interaction with time, race, and social class. By examining the coefficients such as year and income in our regression model, we aim to understand the differences in income inequality between different race and social class, and see how it changes over time.
+
+Thus revealing the complex interplay between time, race, social class, and income disparity in the United States.
+
+# Data {#sec-data}
+## Data Source
+The first and second data is gathered from the United States Census Bureau, where the first dataset introduces the income share by each social class over time: 2002 to 2019 in the United States. The second data illustrates the median household income based on race and year. 
+
+## Data Measurement
+The dataset provides information that offers insights into the income trends in the United States. The y-axis represents the income share, measured in dollars (%). The x-axis corresponds to the years from 2002 to 2019, representing the total income for each year.
+
+Data cleaning and analysis were conducted using the base statistical programming language R (R Core Team 2023), and the core components such as tidyverse (Wickham et al. 2019), ggplot2 (Wickham 2016), dplyr (Wickham et al. 2023), readr (Wickham, Hester, and Bryan 2024), tibble (Müller and Wickham 2023),stringr (Wickham 2023), haven (Wickham, Miller, and Smith 2023), janitor (Firke 2023), knitr (Xie 2023).
+
+## Variables of Interest
+```{r, echo = FALSE}
+# Load the necessary library
+library(knitr)
+
+# Load the data from CSV
+data <- read.csv("Income_inequality_social_class.csv")
+
+# Extracting the first ten rows for the table
+data_subset <- head(data, 40)
+
+# Use kable to create a nicely formatted table in Markdown
+kable(data_subset, caption = "First 40 rows of Income Share by Social Class Over Time: 2002 to 2019 in the United States.", format = "markdown")
+
+```
+Table 1: Extracting the first 40 rows of Income Share by social class over time: 2002 to 2019 in the United States.
+
+1. Location: The model uses all the dataset collected across the country of the United States. This geographic coverage enables us to access different social class with different income level.   
+
+2. Social Class: The dataset contains information on income levels for each social class, including Top 1% income, Bottom 50% income, and Top 10% income. These income levels provide detailed insights into income distribution across different years and shares of total income in the United States.
+
+3. Year: The dataset displays years from 2002 to 2021, covering a range that allows for the exploration of long-term income trends and changes over time. This period aids in analyzing income dynamics before and after the Great Recession, offering insights into patterns of income distribution.
+
+4. Share of total income: The dataset likely represent the share of total income that the specified social class (e.g., "Top 1% income") earns in the United States for the given year. For instance, a value of 0.1610 for "Top 1% income" in the USA for 2002 could mean that the top 1% of earners received 16.10% of the total income generated in the USA that year.This data can be used to analyze trends in income distribution and inequality within the United States over time, examining how the income shares of different segments (like the top 1%, top 10%, and bottom 50%) of the population change.
+
+## Data Visualization
+```{r, echo = FALSE}
+library(ggplot2)
+
+# Load the data
+data <- read.csv("Income_inequality_social_class.csv")
+
+# Rename the 'Unnamed: 3' column to 'Income Share'
+colnames(data)[4] <- "Income Share"
+
+# Plotting the data
+ggplot(data, aes(x = Year, y = `Income Share`, color = Social_Class, group = Social_Class)) +
+  geom_line() +
+  facet_wrap(~Country, scales = 'free_y') +
+  labs(title = "Income Share by Social Class Over Time",
+       x = "Year",
+       y = "Income Share (%)",
+       color = "Social Class") +
+  theme_minimal()
+
+```
+Figure 1: Income Share by Social Class Over Time: 2002 to 2019 in the United States.
+
+Figure 1 illustrates the changing dynamics of income distribution across different social classes in the United States from 2002 to 2019. Specifically, the data show an upward trend in the income share for the top 1% and top 10% of earners, suggesting that these groups have been capturing a progressively larger portion of the total income pie over the examined period. In contrast, the bottom 50% of earners experienced a decline in their income share, indicating that their relative economic position has decreased during the same time frame. The consistent increase in income share for the top 1% and top 10% suggests a concentration of wealth at the top, a classic indicator of growing income inequality. This trend raises concerns about the economic well-being of the majority, as the bottom 50%'s shrinking share implies that a significant portion of the population is benefiting less from overall economic growth. 
+
+```{r, echo = FALSE}
+# Load necessary libraries
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(scales)
+
+# Read the CSV file into an R data frame
+income_data <- read_csv("Median_Income_Race.csv")
+
+# Convert Median_Income to a numeric value after removing commas
+income_data <- income_data %>%
+  mutate(
+    Median_Income = as.numeric(gsub(",", "", Median_Income)),
+    Year = as.integer(Year)
+  )
+
+# Remove rows with NA values in Year or Median_Income
+income_data <- na.omit(income_data)
+
+# Order the data by Year
+income_data <- income_data %>%
+  arrange(Year, Race)
+
+# Generate a sequence of years at 5-year intervals
+years_breaks <- seq(from = floor(min(income_data$Year)/5)*5, # Round down to nearest multiple of 5
+                    to = ceiling(max(income_data$Year)/5)*5, # Round up to nearest multiple of 5
+                    by = 5)
+
+# Create a line chart with years displayed at 5-year intervals
+median_income_plot <- ggplot(income_data, aes(x = Year, y = Median_Income, group = Race, color = Race)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = years_breaks) + # Set x-axis breaks at 5-year intervals
+  scale_y_continuous(labels = label_comma()) + # Format y-axis labels to avoid scientific notation
+  theme_minimal() +
+  labs(title = "Median Income by Race Over the Years",
+       x = "Year",
+       y = "Median Income (Dollars)",
+       color = "Race") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1), # Rotate x-axis labels for readability
+        text = element_text(size = 12))
+
+# Print the plot
+print(median_income_plot)
+
+# Optionally save the plot to a file
+ggsave("median_income_plot.png", median_income_plot, width = 10, height = 8)
+
+```
+Figure 2: Trend of Median Income by Race over the year: 2002 to 2019 in the United States.
+
+The second set of data, sourced from the United States Census Bureau, displays the median household income segmented by race and year. As depicted in Figure 2, the trend of median income by race from 2002 to 2019 generally shows an upward trajectory. However, starting from 2007, a downward trend is observable across all racial groups, likely influenced by the financial crisis spanning December 2007 to June 2009. This period witnessed a marked decrease in median income across most racial categories, extending over a five-year span or longer. Notably, Asian and White households recovered more rapidly than their Hispanic and Black counterparts, indicating a potential exacerbation of income inequality among races.
+
+For instance, between 2007 and 2019, the median income for Asians increased by 23.8%, from $90,290 to $111,800. In contrast, Black households saw a more modest increase of 11.7%, from $46,320 to $51,750. Examining the five years post-recession (2007 to 2011), Asian income decreased by 8.7%, whereas Black income declined by 11.9%. This comparative analysis reveals a pronounced disparity: Asian households experienced a smaller reduction in income post-recession and achieved a quicker and greater recovery compared to Black households.
+
+Such trends underscore a notable income inequality between racial groups, influenced by various factors including workplace and environmental contexts. While individual circumstances vary, the overarching data suggests persistent disparities in income recovery and growth among different races, highlighting a critical area for policy intervention and societal attention.
+
+This information provides additional insight into income inequality among different racial groups. While Figure 1 focuses solely on social classes, this could offer a more detailed analysis of income disparities.
+
+# Model
+In this section, we will discuss the Bayesian model that will be used in the analysis. 
+
+## Model set-up
+The Bayesian linear regression model is formulated as follows:
+
+$$
+\text{Share_of_total_income (Y)} = \beta_0 + \beta_1 \cdot \text{Year} + \beta_2 \cdot \text{Social_Class} + \beta_3 \cdot \text{Period} + \beta_4 \cdot (\text{Year} \times \text{Social_Class}) + \beta_5 \cdot (\text{Social_Class} \times \text{Period}) + \varepsilon
+$$
+We run the model in R (R Core Team 2023) using the rstanarm package of Goodrich et al. (2022). We use the default priors from rstanarm.
+
+### Model justification
+
+We expect a capture the relationship between the response variable, Y, representing the share of income based on each social class.
+- $\beta_0$ is the overall intercept.
+- $\beta_1$ represents the trend of income share over time.
+- $\beta_2$ represents the differences in income share across different social classes.
+- $\beta_3$ represents the impact of the economic period on income share.
+- $\beta_4$ and $\beta_5$ are interaction terms that capture the nuanced effects of time and economic periods on different social classes.
+- $\varepsilon$ is the error term.
+
+The choice of priors for the coefficients, $\beta_0$, $\beta_1$, and $\beta_3$, $\beta_4$, $\beta_5$ as Normal distributions with mean 0 and a standard deviation of 2.5 reflects a weak prior assumption. This indicates that there are no strong preconceptions regarding the size or direction of their impacts.
+
+# Results
+The regression results are as following:
+```{r, echo = FALSE}
+# Load necessary libraries
+if (!require(dplyr)) install.packages("dplyr")
+if (!require(stargazer)) install.packages("stargazer")
+if (!require(performance)) install.packages("performance")
+
+library(dplyr)
+library(stargazer)
+library(performance)
+
+# Read the dataset
+data <- read.csv("Income_inequality_social_class.csv")
+
+# Define the periods based on the year
+data <- data %>%
+  mutate(Period = case_when(
+    Year >= 2002 & Year <= 2007 ~ "Pre-Recession",
+    Year > 2007 & Year <= 2009 ~ "During-Recession",
+    Year > 2009 & Year <= 2019 ~ "Post-Recession",
+    TRUE ~ as.character(NA) # for years outside the specified range
+  )) %>%
+  mutate(Period = factor(Period))
+
+# Fit the linear regression model with interactions
+model <- lm(Share_of_total_income ~ Year + Social_Class + Period + Year:Social_Class + Social_Class:Period, data = data)
+
+# Get the summary of the model
+model_summary <- summary(model)
+
+# Calculate RMSE
+rmse_value <- rmse(model)
+
+# Create the table with stargazer
+stargazer(model, type = "text", 
+          add.lines = list(
+            c("Num. Obs.", nrow(data)),
+            c("RMSE", format(rmse_value, digits=2)),
+            c("AIC", format(AIC(model), digits=2)),
+            c("BIC", format(BIC(model), digits=2))
+          ))
+
+```
+Table 2: Summary results for the share of total income model
+
+This table summarize the output of a regression model that estimates the share of total income based on different predictors: year, social class (top 1% income and top 10% income), periods (pre- and post-recession), and interaction terms between these predictors.
+
+Social Class (Top 1% income and Top 10% income): Both coefficients are negative and statistically significant (as indicated by the three asterisks, typically denoting p < 0.001). This suggests that compared to the reference social class (presumably the rest of the population), the top 1% and the top 10% have a significantly lower share of the total income.
+
+PeriodPost-Recession and PeriodPre-Recession: The coefficients for both are very close to zero and are likely not statistically significant, indicating no change in the share of total income during these periods compared to the reference period (possibly the recession period).
+
+Interaction terms: The positive and significant interaction terms for Year:Social_ClassTop 1% income and Year:Social_ClassTop 10% income suggest that the share of total income for these social classes is increasing annually at a rate faster than the rest of the population.
+
+Constant: The constant term is positive but not statistically significant, suggesting that for the base category (which is not detailed in the summary), the share of total income is not significantly different from zero.
+
+# Discussion
+
+## Findings
+This paper examined income inequality in United States from 2002 to 2019, especially analyzing the income inequality before and after the great recession (2007-2009). Throughout the data analysis and regression modeling, we found that income inequality has potentially increased over time and the income gap between each social classes has also increased. 
+
+Comparing income inequality trends pre and post recession: 
+
+Before the recession: the gap was widening, as evidenced by significant gains for the top earners and losses for the bottom 50%. 
+
+After the Recession: The trend of widening inequality continued and possibly accelerated, with the top groups seeing substantial increases in their income shares while the bottom 50% experienced a decline. 
+
+Throughout the discussion part, we will now provide detailed points of our results in the following sections.
+
+Additionally we could observe income inequality between different races. In result, Asian and White tend to have higher income comparison to Black and Hispanic. 
+
+## Comparing income inequality trends pre, during, and post recession in the United States: 
+Based on the analysis of Figure 1, we can find out the details about the changing dynamics of income distribution across different social classes in the United States from 2002 to 2019. Specifically, we can examine the trends that has occurred in income inequality before, during, and after the great recession in the United States. The data shows an upward trend in the income share for the top 1% and top 10% of earners, and a downward trend for the bottom 50%. This indicates that the top 1% and the top 10% group has more portion of the total income pie over the examined period and the bottom 50% group has less portion of the total income pie over the same time frame.
+
+This trend could be related to the financial crisis, where the economic recession, officially beginning in December 2007 and ending in June 2009. During this period, many businesses faced significant challenges, including reduced consumer spending, tightened credit conditions, and a decline in investments. During the recession, there was significant amount of job losses where the loss of jobs and income contributed to the decrease in personal income. 
+
+To assess the impact of the Great Recession, which spanned from late 2007 to mid-2009, we can divide the analysis into three phases: Pre-Recession (2002-2007), during the Recession (2007-2009), and Post-Recession (2009-2019). By comparing these periods, we aim to understand how this significant economic downturn influenced the distribution of income among these groups.
+
+Pre-Recession (2002-2007): During this period, the economy was generally expanding. The data show that the income share for the top earners (1% and 10%) was already on the rise, this indicates that the trends towards inequality began before the economic downturn. The income share of the top 1% increased by 14.2% during this time period, from 0.1610 to 0.1838. Furthermore, the income share of the top 10% has increased by 6.14% during this time period, from 0.4149 to 0.4404. On the other hand where the income share for the bottom 50% was on a decrease by 7.11%, from 0.1476 to 0.1371. This suggest that this group of people are less benefiting from overall economic growth. 
+
+During the Recession (2007-2009): Typically, recessions can disproportionately affect lower-income groups, but the specific impacts can vary. In this case, the income share of the top 1% decreased by 9.14% during the recession, from 0.1838 to 0.1670. This significant reduction suggests that the highest earners were not immune to the economic downturn, likely reflecting declines in investment income, real estate values, and high-paying jobs, which are common income sources for this group. The top 10% experienced a 3.61% decrease in their income share, from 0.4404 to 0.4245. While this group also felt the effects of the recession, the impact was less severe compared to the top 1%. This difference could be due to a broader diversification of income sources within this group or a slightly more resilient income structure compared to the very top earners. The bottom 50% saw a relatively minor decrease in their income share of 0.51%, from 0.1371 to 0.1364. This smaller change could indicate that the income sources for this group, often more reliant on wages rather than investments, did not fluctuate as dramatically as those for higher income groups. However, it's important to note that for individuals with lower income, even a small decrease can have a substantial impact on their living standards. The more significant decrease in income share for the top 1% temporarily narrowed the income inequality gap. However, the critical question for understanding long-term trends is how these groups' income shares rebounded in the post-recession recovery period.
+
+Post-Recession (2009-2019): The recovery phase is crucial for understanding whether the income distribution trends were a temporary response to the recession or part of a longer-term pattern. The income share of the top 1% earners continued to grow from 0.1670 to 0.1904, which represents a 14% increase in total income share. The top 10% earners also observed their income share increase from 0.4245 to 0.4567, a 7.58% rise in total income share. However, the bottom 50% experienced a decrease in their income share by 4.62%, from 0.1364 to 0.1301. While the income shares of top earners continued to grow, the bottom 50%'s share did not recover or even continued to fall, indicating a worsening of income inequality post-recession.The top 1% and top 10% of earners saw their share of total income increase significantly between 2009 and 2019. The top 1% experienced a 14% increase, and the top 10% saw a 7.58% rise. This growth suggests that these groups were able to recover from the recession and even enhance their economic standing, likely benefiting from the recovery in investment markets, real estate, and high-income employment sectors. However, the bottom 50% saw their share of total income decrease by 4.62%. This decline indicates that this group did not benefit from the economic recovery to the same extent as the higher income groups. In conclusion, increased income share for the top earners and decreased share for the bottom half suggest that income inequality worsened in the post-recession period. Where it indicates that the gap between the rich and the poor got widened.
+
+In conclusion, the depicted trends in Figure 1 suggest that income inequality has been widening over the years, with significant gains concentrated among the top earners and losses by the bottom half of the distribution. Comparing income inequality trends pre and post recession: Before the recession: the gap was widening, as evidenced by significant gains for the top earners and losses for the bottom 50%. After the Recession: The trend of widening inequality continued and possibly accelerated, with the top groups seeing substantial increases in their income shares while the bottom 50% experienced a decline. By comparing these trends, it's clear that the gap between the rich and the poor has indeed grown larger post-recession. The top earners not only recovered their losses but also gained a larger portion of the income share, while the bottom half saw a continual decline.
+
+## Asian and White are likely to earn more income compared to Black and Hispanic people. 
+Based on the analysis of Figure 2, we can find out the details about the trend of median income by race over the year: 2002 to 2019 in the United States. Specifically, we can examine the  income inequality among different racial groups that has occurred in the period of before, during, and after the great recession in the United States. As similar to figure 1, the income has increased before the great recession, however decrease during the recession, and covered after the recession over time. 
+
+In overall, figure 2 traces the median household income by race from 2002 to 2019, showing an overall increase but with a dip during the 2007 financial crisis, affecting all racial groups for at least five years. Asian and White households bounced back quicker than Hispanic and Black ones, suggesting growing racial income inequality. From 2007 to 2019, Asian median income rose by 23.8%, while Black households saw an 11.7% increase. Post-recession, Asian income fell by 8.7%, and Black income by 11.9%, revealing Asian households had a smaller decline and a faster recovery than Black households. These trends indicate persistent income disparities across racial lines, pointing to the need for targeted policy measures and societal engagement to address these inequalities.
 
 
-**Motivation**
+## Weaknesses and next steps
+Bayesian multiple regression show weaknesses in these factors: 
+1. Model Complexity: Including multiple interaction terms can lead to a model that is too complex, potentially over fitting the data. This can make the model sensitive to small variations in the data and can reduce its predictive performance on new data.
+2. Sample Size: With Bayesian models, having a smaller sample size can be particularly problematic because the model's estimates can be heavily influenced by the priors. This could result in less reliable posterior distributions if the data isn't sufficient to overwhelm the prior beliefs.
 
-1. *For what purpose was the dataset created? Was there a specific task in mind? Was there a specific gap that needed to be filled? Please provide a description.*
-    - The dataset was created to enable analysis of Australian politicians. We were unable to find a publicly available dataset in a structured format that had the biographical and political information on Australian politicians that was needed for modelling.
-2. *Who created the dataset (for example, which team, research group) and on behalf of which entity (for example, company, institution, organization)?*
-    - TBD
-3. *Who funded the creation of the dataset? If there is an associated grant, please provide the name of the grantor and the grant name and number.*
-    - TBD
-4. *Any other comments?*
-    - TBD
-
-**Composition**
-
-1. *What do the instances that comprise the dataset represent (for example, documents, photos, people, countries)? Are there multiple types of instances (for example, movies, users, and ratings; people and interactions between them; nodes and edges)? Please provide a description.*
-	- TBD
-2. *How many instances are there in total (of each type, if appropriate)?*
-	- TBD
-3. *Does the dataset contain all possible instances or is it a sample (not necessarily random) of instances from a larger set? If the dataset is a sample, then what is the larger set? Is the sample representative of the larger set (for example, geographic coverage)? If so, please describe how this representativeness was validated/verified. If it is not representative of the larger set, please describe why not (for example, to cover a more diverse range of instances, because instances were withheld or unavailable).*
-	- TBD
-4. *What data does each instance consist of? "Raw" data (for example, unprocessed text or images) or features? In either case, please provide a description.*
-	- TBD
-5. *Is there a label or target associated with each instance? If so, please provide a description.*
-	- TBD
-6. *Is any information missing from individual instances? If so, please provide a description, explaining why this information is missing (for example, because it was unavailable). This does not include intentionally removed information, but might include, for example, redacted text.*
-	- TBD
-7. *Are relationships between individual instances made explicit (for example, users' movie ratings, social network links)? If so, please describe how these relationships are made explicit.*
-	- TBD
-8. *Are there recommended data splits (for example, training, development/validation, testing)? If so, please provide a description of these splits, explaining the rationale behind them.*
-	- TBD
-9. *Are there any errors, sources of noise, or redundancies in the dataset? If so, please provide a description.*
-	- TBD
-10. *Is the dataset self-contained, or does it link to or otherwise rely on external resources (for example, websites, tweets, other datasets)? If it links to or relies on external resources, a) are there guarantees that they will exist, and remain constant, over time; b) are there official archival versions of the complete dataset (that is, including the external resources as they existed at the time the dataset was created); c) are there any restrictions (for example, licenses, fees) associated with any of the external resources that might apply to a dataset consumer? Please provide descriptions of all external resources and any restrictions associated with them, as well as links or other access points, as appropriate.*
-	- TBD
-11. *Does the dataset contain data that might be considered confidential (for example, data that is protected by legal privilege or by doctor-patient confidentiality, data that includes the content of individuals' non-public communications)? If so, please provide a description.*
-	- TBD
-12. *Does the dataset contain data that, if viewed directly, might be offensive, insulting, threatening, or might otherwise cause anxiety? If so, please describe why.*
-	- TBD
-13. *Does the dataset identify any sub-populations (for example, by age, gender)? If so, please describe how these subpopulations are identified and provide a description of their respective distributions within the dataset.*
-	- TBD
-14. *Is it possible to identify individuals (that is, one or more natural persons), either directly or indirectly (that is, in combination with other data) from the dataset? If so, please describe how.*
-	- TBD
-15. *Does the dataset contain data that might be considered sensitive in any way (for example, data that reveals race or ethnic origins, sexual orientations, religious beliefs, political opinions or union memberships, or locations; financial or health data; biometric or genetic data; forms of government identification, such as social security numbers; criminal history)? If so, please provide a description.*
-	- TBD
-16. *Any other comments?*
-	- TBD
-
-**Collection process**
-
-1. *How was the data associated with each instance acquired? Was the data directly observable (for example, raw text, movie ratings), reported by subjects (for example, survey responses), or indirectly inferred/derived from other data (for example, part-of-speech tags, model-based guesses for age or language)? If the data was reported by subjects or indirectly inferred/derived from other data, was the data validated/verified? If so, please describe how.*
-	- TBD
-2. *What mechanisms or procedures were used to collect the data (for example, hardware apparatuses or sensors, manual human curation, software programs, software APIs)? How were these mechanisms or procedures validated?*
-	- TBD
-3. *If the dataset is a sample from a larger set, what was the sampling strategy (for example, deterministic, probabilistic with specific sampling probabilities)?*
-	- TBD
-4. *Who was involved in the data collection process (for example, students, crowdworkers, contractors) and how were they compensated (for example, how much were crowdworkers paid)?*
-	- TBD
-5. *Over what timeframe was the data collected? Does this timeframe match the creation timeframe of the data associated with the instances (for example, recent crawl of old news articles)? If not, please describe the timeframe in which the data associated with the instances was created.*
-	- TBD
-6. *Were any ethical review processes conducted (for example, by an institutional review board)? If so, please provide a description of these review processes, including the outcomes, as well as a link or other access point to any supporting documentation.*
-	- TBD
-7. *Did you collect the data from the individuals in question directly, or obtain it via third parties or other sources (for example, websites)?*
-	- TBD
-8. *Were the individuals in question notified about the data collection? If so, please describe (or show with screenshots or other information) how notice was provided, and provide a link or other access point to, or otherwise reproduce, the exact language of the notification itself.*
-	- TBD
-9. *Did the individuals in question consent to the collection and use of their data? If so, please describe (or show with screenshots or other information) how consent was requested and provided, and provide a link or other access point to, or otherwise reproduce, the exact language to which the individuals consented.*
-	- TBD
-10. *If consent was obtained, were the consenting individuals provided with a mechanism to revoke their consent in the future or for certain uses? If so, please provide a description, as well as a link or other access point to the mechanism (if appropriate).*
-	- TBD
-11. *Has an analysis of the potential impact of the dataset and its use on data subjects (for example, a data protection impact analysis) been conducted? If so, please provide a description of this analysis, including the outcomes, as well as a link or other access point to any supporting documentation.*
-	- TBD
-12. *Any other comments?*
-	- TBD
-
-**Preprocessing/cleaning/labeling**
-
-1. *Was any preprocessing/cleaning/labeling of the data done (for example, discretization or bucketing, tokenization, part-of-speech tagging, SIFT feature extraction, removal of instances, processing of missing values)? If so, please provide a description. If not, you may skip the remaining questions in this section.*
-	- TBD
-2. *Was the "raw" data saved in addition to the preprocessed/cleaned/labeled data (for example, to support unanticipated future uses)? If so, please provide a link or other access point to the "raw" data.*
-	- TBD
-3. *Is the software that was used to preprocess/clean/label the data available? If so, please provide a link or other access point.*
-	- TBD
-4. *Any other comments?*
-	- TBD
-
-**Uses**
-
-1. *Has the dataset been used for any tasks already? If so, please provide a description.*
-	- TBD
-2. *Is there a repository that links to any or all papers or systems that use the dataset? If so, please provide a link or other access point.*
-	- TBD
-3. *What (other) tasks could the dataset be used for?*
-	- TBD
-4. *Is there anything about the composition of the dataset or the way it was collected and preprocessed/cleaned/labeled that might impact future uses? For example, is there anything that a dataset consumer might need to know to avoid uses that could result in unfair treatment of individuals or groups (for example, stereotyping, quality of service issues) or other risks or harms (for example, legal risks, financial harms)? If so, please provide a description. Is there anything a dataset consumer could do to mitigate these risks or harms?*
-	- TBD
-5. *Are there tasks for which the dataset should not be used? If so, please provide a description.*
-	- TBD
-6. *Any other comments?*
-	- TBD
-
-**Distribution**
-
-1. *Will the dataset be distributed to third parties outside of the entity (for example, company, institution, organization) on behalf of which the dataset was created? If so, please provide a description.*
-	- TBD
-2. *How will the dataset be distributed (for example, tarball on website, API, GitHub)? Does the dataset have a digital object identifier (DOI)?*
-	- TBD
-3. *When will the dataset be distributed?*
-	- TBD
-4. *Will the dataset be distributed under a copyright or other intellectual property (IP) license, and/or under applicable terms of use (ToU)? If so, please describe this license and/ or ToU, and provide a link or other access point to, or otherwise reproduce, any relevant licensing terms or ToU, as well as any fees associated with these restrictions.*
-	- TBD
-5. *Have any third parties imposed IP-based or other restrictions on the data associated with the instances? If so, please describe these restrictions, and provide a link or other access point to, or otherwise reproduce, any relevant licensing terms, as well as any fees associated with these restrictions.*
-	- TBD
-6. *Do any export controls or other regulatory restrictions apply to the dataset or to individual instances? If so, please describe these restrictions, and provide a link or other access point to, or otherwise reproduce, any supporting documentation.*
-	- TBD
-7. *Any other comments?*
-	- TBD
-
-**Maintenance**
-
-1. *Who will be supporting/hosting/maintaining the dataset?*
-	- TBD
-2. *How can the owner/curator/manager of the dataset be contacted (for example, email address)?*
-	- TBD
-3. *Is there an erratum? If so, please provide a link or other access point.*
-	- TBD
-4. *Will the dataset be updated (for example, to correct labeling errors, add new instances, delete instances)? If so, please describe how often, by whom, and how updates will be communicated to dataset consumers (for example, mailing list, GitHub)?*
-	- TBD
-5. *If the dataset relates to people, are there applicable limits on the retention of the data associated with the instances (for example, were the individuals in question told that their data would be retained for a fixed period of time and then deleted)? If so, please describe these limits and explain how they will be enforced.*
-	- TBD
-6. *Will older versions of the dataset continue to be supported/hosted/maintained? If so, please describe how. If not, please describe how its obsolescence will be communicated to dataset consumers.*
-	- TBD
-7. *If others want to extend/augment/build on/contribute to the dataset, is there a mechanism for them to do so? If so, please provide a description. Will these contributions be validated/verified? If so, please describe how. If not, why not? Is there a process for communicating/distributing these contributions to dataset consumers? If so, please provide a description.*
-	- TBD
-8. *Any other comments?*
-	- TBD
-
-
-\newpage
+Within the overall income analysis, there could be potential biases that could occur. For example for sample size for our model, the data may still have unobserved factors that may influence income inequality. These unobserved information could potentially change the estimates and results we have goten. 
 
 # References
+R Core Team. 2023. R: A Language and Environment for Statistical Computing. Vienna,
+Austria: R Foundation for Statistical Computing. https://www.R-project.org/.
+
+Xie, Yihui. 2023. Knitr: A General-Purpose Package for Dynamic Report Generation in r.
+https://yihui.org/knitr/.
+
+Wickham, Hadley, Jim Hester, and Jennifer Bryan. 2024. Readr: Read Rectangular Text Data.
+27. https://readr.tidyverse.org.
+
+Wickham, Hadley. 2016. Ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New
+York. https://ggplot2.tidyverse.org.
+
+Wickham, Hadley, Romain François, Lionel Henry, Kirill Müller, and Davis Vaughan. 2023. Dplyr: A Grammar of Data Manipulation. https://dplyr.tidyverse.org.
+
+Wickham, Hadley, and Dana Seidel. 2022. scales: Scale Functions for Visualization. https://CRAN.R-project.org/package=scales.
+
+Bureau, U. C. (2023, September 12). Historical income tables: Income inequality. Census.gov. https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-income-inequality.html 
+
+Data - wid - world inequality database. WID. (n.d.). https://wid.world/data/ 

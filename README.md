@@ -2,7 +2,7 @@
 
 ## Overview
 
-This paper investigates the income ineqaulity in United States after the 2008 financial crash using data from various surveys.
+"This paper investigates income inequality in the United States from 2002 to 2019 using data from the United States Census and the World Inequality Database (WID). Throughout the paper, we will explore trends in income inequality, examining whether it is increasing or decreasing over time, and how the Great Recession of 2007-2009 affected income inequality. We will utilize data analysis and regression modeling to investigate these trends. Investigating these trends is significant, as it could assist policymakers or the government in developing strategies that could decrease the inequalities occurring within the country. As a result, this report may be used to help promote social and economic equity in the United States."
 
 ## File Structure
 

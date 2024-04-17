@@ -2,7 +2,7 @@
 title: "Datasheet for 'A dataset'"
 author: 
   - Dong Jun Yoon
-thanks: "Code and data are available at: https://github.com/siru1366/income.git."
+thanks: "Code and data are available at:."
 date: "14 April 2024"
 date-format: "D MMMM YYYY"
 abstract: "The dataset Upper income limit, income share and average income by economic family type and income decile was created by Statistics Canada to analyze income distribution across various economic family types and income deciles in Canada. It provides valuable insights into income disparities and trends over time, addressing the gap in comprehensive data on income distribution. The dataset comprises instances representing different socio-economic groups in Canada, with each instance corresponding to a specific combination of economic family type and income decile. It includes 183,043 instances and offers a detailed view of income distribution patterns. The dataset has been utilized for research on income dynamics, poverty analysis, labor market trends, and socioeconomic policy evaluation. It is openly accessible under the MIT License and is maintained by the Canadian government."

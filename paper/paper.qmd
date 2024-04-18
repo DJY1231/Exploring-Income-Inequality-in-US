@@ -8,8 +8,11 @@ date-format: long
 abstract: "This paper investigates income inequality in the United States from 2002 to 2019 using data from the United States Census and the World Inequality Database (WID). Throughout the paper, we will explore trends in income inequality, examining whether it is increasing or decreasing over time, and how the Great Recession of 2007-2009 affected income inequality. We will utilize data analysis and regression modeling to investigate these trends. Investigating these trends is significant, as it could assist policymakers or the government in developing strategies that could decrease the inequalities occurring within the country. As a result, this report may be used to help promote social and economic equity in the United States."
 format: pdf
 number-sections: true
+bibliography: references.bib
 ---
-
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
 # Introduction
 Income inequality is a pressing issue not only in the United States but also globally. It pertains to the uneven distribution of income across a population, spotlighting disparities in financial well-being. Unlike wealth, which accounts for assets such as homes and stocks, income inequality focuses on earnings from various sources—wages, salaries, interest from savings, stock dividends, rental income, and profits from selling assets at a higher price than their purchase cost. This distinction is crucial for understanding the different facets of economic inequality. Therefore understanding inequality may provide insights for policymakers or researchers in contributing the problem. 
 
@@ -36,7 +39,7 @@ The dataset provides information that offers insights into the income trends in 
 Data cleaning and analysis were conducted using the base statistical programming language R (R Core Team 2023), and the core components such as tidyverse (Wickham et al. 2019), ggplot2 (Wickham 2016), dplyr (Wickham et al. 2023), readr (Wickham, Hester, and Bryan 2024), tibble (Müller and Wickham 2023),stringr (Wickham 2023), haven (Wickham, Miller, and Smith 2023), janitor (Firke 2023), knitr (Xie 2023).
 
 ## Variables of Interest
-```{r results='hide', message=FALSE, warning=FALSE}
+```{r}
 # Load the necessary library
 library(knitr)
 
@@ -146,14 +149,20 @@ Such trends underscore a notable income inequality between racial groups, influe
 This information provides additional insight into income inequality among different racial groups. While Figure 1 focuses solely on social classes, this could offer a more detailed analysis of income disparities.
 
 # Model
-In this section, we will discuss the Bayesian model that will be used in the analysis. 
+In this section, we will discuss the multiple linear regression model that will be used in the analysis. 
 
 ## Model set-up
-The Bayesian linear regression model is formulated as follows:
+The multiple linear regression model is formulated as follows:
 
 $$
-\text{Share_of_total_income (Y)} = \beta_0 + \beta_1 \cdot \text{Year} + \beta_2 \cdot \text{Social_Class} + \beta_3 \cdot \text{Period} + \beta_4 \cdot (\text{Year} \times \text{Social_Class}) + \beta_5 \cdot (\text{Social_Class} \times \text{Period}) + \varepsilon
+\begin{align*}
+\text{Share\_of\_total\_income} (Y) &= \beta_0 + \beta_1 \cdot \text{Year} + \beta_2 \cdot \text{Social\_Class} \\
+&\quad + \beta_3 \cdot \text{Period} + \beta_4 \cdot (\text{Year} \times \text{Social\_Class}) \\
+&\quad + \beta_5 \cdot (\text{Social\_Class} \times \text{Period}) + \varepsilon
+\end{align*}
+
 $$
+
 We run the model in R (R Core Team 2023) using the rstanarm package of Goodrich et al. (2022). We use the default priors from rstanarm.
 
 ### Model justification
@@ -170,7 +179,7 @@ The choice of priors for the coefficients, $\beta_0$, $\beta_1$, and $\beta_3$, 
 
 # Results
 The regression results are as following:
-```{r results='hide', message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE}
 # Load necessary libraries
 if (!require(dplyr)) install.packages("dplyr")
 if (!require(stargazer)) install.packages("stargazer")
@@ -261,9 +270,9 @@ In overall, figure 2 traces the median household income by race from 2002 to 201
 
 
 ## Weaknesses and next steps
-Bayesian multiple regression show weaknesses in these factors: 
+Multiple linear regression show weaknesses in these factors: 
 1. Model Complexity: Including multiple interaction terms can lead to a model that is too complex, potentially over fitting the data. This can make the model sensitive to small variations in the data and can reduce its predictive performance on new data.
-2. Sample Size: With Bayesian models, having a smaller sample size can be particularly problematic because the model's estimates can be heavily influenced by the priors. This could result in less reliable posterior distributions if the data isn't sufficient to overwhelm the prior beliefs.
+2. Sample Size: With multiple linear models, having a smaller sample size can be particularly problematic because the model's estimates can be heavily influenced by the priors. This could result in less reliable posterior distributions if the data isn't sufficient to overwhelm the prior beliefs.
 
 Within the overall income analysis, there could be potential biases that could occur. For example for sample size for our model, the data may still have unobserved factors that may influence income inequality. These unobserved information could potentially change the estimates and results we have goten. 
 

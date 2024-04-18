@@ -8,7 +8,6 @@ date-format: long
 abstract: "This paper investigates income inequality in the United States from 2002 to 2019 using data from the United States Census and the World Inequality Database (WID). Throughout the paper, we will explore trends in income inequality, examining whether it is increasing or decreasing over time, and how the Great Recession of 2007-2009 affected income inequality. We will utilize data analysis and regression modeling to investigate these trends. Investigating these trends is significant, as it could assist policymakers or the government in developing strategies that could decrease the inequalities occurring within the country. As a result, this report may be used to help promote social and economic equity in the United States."
 format: pdf
 number-sections: true
-bibliography: references.bib
 ---
 
 # Introduction
@@ -29,7 +28,7 @@ Thus revealing the complex interplay between time, race, social class, and incom
 
 # Data {#sec-data}
 ## Data Source
-The first and second data is gathered from the United States Census Bureau, where the first dataset introduces the income share by each social class over time: 2002 to 2019 in the United States. The second data illustrates the median household income based on race and year. 
+The first data is gathered from World Inequality Database (WID) and second data is gathered from the United States Census Bureau, where the first dataset introduces the income share by each social class over time: 2002 to 2019 in the United States. The second data illustrates the median household income based on race and year. 
 
 ## Data Measurement
 The dataset provides information that offers insights into the income trends in the United States. The y-axis represents the income share, measured in dollars (%). The x-axis corresponds to the years from 2002 to 2019, representing the total income for each year.
@@ -37,7 +36,7 @@ The dataset provides information that offers insights into the income trends in 
 Data cleaning and analysis were conducted using the base statistical programming language R (R Core Team 2023), and the core components such as tidyverse (Wickham et al. 2019), ggplot2 (Wickham 2016), dplyr (Wickham et al. 2023), readr (Wickham, Hester, and Bryan 2024), tibble (Müller and Wickham 2023),stringr (Wickham 2023), haven (Wickham, Miller, and Smith 2023), janitor (Firke 2023), knitr (Xie 2023).
 
 ## Variables of Interest
-```{r, echo = FALSE}
+```{r results='hide', message=FALSE, warning=FALSE}
 # Load the necessary library
 library(knitr)
 
@@ -62,7 +61,7 @@ Table 1: Extracting the first 40 rows of Income Share by social class over time:
 4. Share of total income: The dataset likely represent the share of total income that the specified social class (e.g., "Top 1% income") earns in the United States for the given year. For instance, a value of 0.1610 for "Top 1% income" in the USA for 2002 could mean that the top 1% of earners received 16.10% of the total income generated in the USA that year.This data can be used to analyze trends in income distribution and inequality within the United States over time, examining how the income shares of different segments (like the top 1%, top 10%, and bottom 50%) of the population change.
 
 ## Data Visualization
-```{r, echo = FALSE}
+```{r results='hide', message=FALSE, warning=FALSE}
 library(ggplot2)
 
 # Load the data
@@ -86,7 +85,7 @@ Figure 1: Income Share by Social Class Over Time: 2002 to 2019 in the United Sta
 
 Figure 1 illustrates the changing dynamics of income distribution across different social classes in the United States from 2002 to 2019. Specifically, the data show an upward trend in the income share for the top 1% and top 10% of earners, suggesting that these groups have been capturing a progressively larger portion of the total income pie over the examined period. In contrast, the bottom 50% of earners experienced a decline in their income share, indicating that their relative economic position has decreased during the same time frame. The consistent increase in income share for the top 1% and top 10% suggests a concentration of wealth at the top, a classic indicator of growing income inequality. This trend raises concerns about the economic well-being of the majority, as the bottom 50%'s shrinking share implies that a significant portion of the population is benefiting less from overall economic growth. 
 
-```{r, echo = FALSE}
+```{r results='hide', message=FALSE, warning=FALSE}
 # Load necessary libraries
 library(readr)
 library(ggplot2)
@@ -171,7 +170,7 @@ The choice of priors for the coefficients, $\beta_0$, $\beta_1$, and $\beta_3$, 
 
 # Results
 The regression results are as following:
-```{r, echo = FALSE}
+```{r results='hide', message=FALSE, warning=FALSE}
 # Load necessary libraries
 if (!require(dplyr)) install.packages("dplyr")
 if (!require(stargazer)) install.packages("stargazer")

@@ -2,10 +2,10 @@
 title: "Datasheet for 'A dataset'"
 author: 
   - Dong Jun Yoon
-thanks: "Code and data are available at:."
-date: "14 April 2024"
+thanks: "Code and data are available at: https://github.com/DJY1231/Exploring-Income-Inequality-in-US.git."
+date: "`17 April 2024`"
 date-format: "D MMMM YYYY"
-abstract: "The dataset Upper income limit, income share and average income by economic family type and income decile was created by Statistics Canada to analyze income distribution across various economic family types and income deciles in Canada. It provides valuable insights into income disparities and trends over time, addressing the gap in comprehensive data on income distribution. The dataset comprises instances representing different socio-economic groups in Canada, with each instance corresponding to a specific combination of economic family type and income decile. It includes 183,043 instances and offers a detailed view of income distribution patterns. The dataset has been utilized for research on income dynamics, poverty analysis, labor market trends, and socioeconomic policy evaluation. It is openly accessible under the MIT License and is maintained by the Canadian government."
+abstract: "The income inequality in the United States from 2002 to 2019 will be observed using data from the United States Census and the World Inequality Database (WID). We will explore trends in income inequality, examining whether it is increasing or decreasing over time, and how the Great Recession of 2007-2009 affected income inequality. Investigating these trends is significant, as it could assist policymakers or the government in developing strategies that could decrease the inequalities occurring within the country. As a result, this report may be used to help promote social and economic equity in the United States."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -17,143 +17,139 @@ Extract of the questions from @gebru2021datasheets.
 **Motivation**
 
 1. *For what purpose was the dataset created? Was there a specific task in mind? Was there a specific gap that needed to be filled? Please provide a description.*
-    - The dataset "Upper income limit, income share and average income by economic family type and income decile" was created to provide insights into income distribution across different economic family types and income deciles in Canada. The dataset aims to analyze the upper income limit, income share, and average income within each economic family type and income decile, offering a detailed understanding of income disparities and trends over time. The creation of this dataset likely aimed to address the gap in comprehensive data on income distribution, particularly at a granular level by economic family type and income decile.
+    - The dataset "Income_inequality_social_class" and "Median_Income_Race" was created to enable analysis of income share and inequality within the United States. The dataset aims to analyze a detailed analysis of the income share and median income over different social classes and race. 
 2. *Who created the dataset (for example, which team, research group) and on behalf of which entity (for example, company, institution, organization)?*
-    - The dataset was created by the Statistics Canada, and it was also published by Statistics Canada on the Open Government Portal of Canada.
+    - The dataset is created from the World Inequality Database (WID) and United States Census Bureau. 
 3. *Who funded the creation of the dataset? If there is an associated grant, please provide the name of the grantor and the grant name and number.*
-    - he creation of the dataset was funded by the government of Canada.
+    - The dataset is funded by the public and non profit institutions.
 4. *Any other comments?*
-    - The source of the dataset is the Canadian Income Survey.
-
+    - The paper focuses more on "Income_inequality_social_class" and does not really focus on the "Median_Income_Race" dataset.
 
 **Composition**
 
 1. *What do the instances that comprise the dataset represent (for example, documents, photos, people, countries)? Are there multiple types of instances (for example, movies, users, and ratings; people and interactions between them; nodes and edges)? Please provide a description.*
-	- The instances in this dataset represent various economic family types and income deciles in Canada. Each instance corresponds to a specific combination of economic family type and income decile, providing insights into income distribution patterns across different socio-economic groups.
+	- The instances in this dataset represent changing dynamics of income distribution across different social classes in the United States from 2002 to 2019. Specifically, the data shows an overall trend in the income share for the top 1%, top 10%, and bottom 50% of earners, providing insights into income distribution across different social groups. 
 2. *How many instances are there in total (of each type, if appropriate)?*
-	- The original dataset has 183043 instances. 
+	- The dataset has 54 instances. 
 3. *Does the dataset contain all possible instances or is it a sample (not necessarily random) of instances from a larger set? If the dataset is a sample, then what is the larger set? Is the sample representative of the larger set (for example, geographic coverage)? If so, please describe how this representativeness was validated/verified. If it is not representative of the larger set, please describe why not (for example, to cover a more diverse range of instances, because instances were withheld or unavailable).*
-	- The dataset likely contains a sample of instances rather than all possible instances within the population of economic family types and income deciles in Canada. The sample is likely representative of the larger population, ensuring coverage of diverse socio-economic groups and geographic regions.
+	- The dataset contains a sample of instances than all possible instances that contributes the income share and income inequality. The sample is likely to be representative of a larger set, allowing to cover most of the social class for each income group. 
 4. *What data does each instance consist of? "Raw" data (for example, unprocessed text or images) or features? In either case, please provide a description.*
-	- Each instance is consist of the year, place, family type, income type, income value of the corresponding group of people of Canada.
+	- Each instance is consist of year, social class and income share of corresponding gorup of people in the United States. 
 5. *Is there a label or target associated with each instance? If so, please provide a description.*
-	- NO
+	- No
 6. *Is any information missing from individual instances? If so, please provide a description, explaining why this information is missing (for example, because it was unavailable). This does not include intentionally removed information, but might include, for example, redacted text.*
-	- There are some information about income value from some instances because they are unavailable in the original dataset.
+	- No
 7. *Are relationships between individual instances made explicit (for example, users' movie ratings, social network links)? If so, please describe how these relationships are made explicit.*
-	- Relationships between individual instances may be implicit, with connections between economic family types and income deciles inferred from the dataset structure. For example, higher income deciles may be associated with specific economic family types, reflecting income disparities.
+	- The dataset does not build up any explicit model relationship between individual instances. Each instance in the dataset represents the total answer for each single respondent's survey answer.  
 8. *Are there recommended data splits (for example, training, development/validation, testing)? If so, please provide a description of these splits, explaining the rationale behind them.*
-	- Recommended data splits may include training, validation, and testing sets to evaluate model performance in predicting income distribution patterns. These splits ensure robustness and generalizability of models trained on the dataset.
+	- No
 9. *Are there any errors, sources of noise, or redundancies in the dataset? If so, please provide a description.*
-	- Errors, noise, or redundancies in the dataset may arise from data collection inconsistencies, reporting errors, or sampling biases. Data preprocessing techniques such as outlier detection and data cleaning may be employed to address these issues.
+	- Errors, sources of noise, or redundancies in the dataset may arise from sampling biases or errors that may occur within the report. 
 10. *Is the dataset self-contained, or does it link to or otherwise rely on external resources (for example, websites, tweets, other datasets)? If it links to or relies on external resources, a) are there guarantees that they will exist, and remain constant, over time; b) are there official archival versions of the complete dataset (that is, including the external resources as they existed at the time the dataset was created); c) are there any restrictions (for example, licenses, fees) associated with any of the external resources that might apply to a dataset consumer? Please provide descriptions of all external resources and any restrictions associated with them, as well as links or other access points, as appropriate.*
-	- The dataset is linked to the Canadian Income Survey that is conducted annually.
+	- No, the dataset does not link to any external source. The dataset rely on suvery collection of individual participants.
 11. *Does the dataset contain data that might be considered confidential (for example, data that is protected by legal privilege or by doctor-patient confidentiality, data that includes the content of individuals' non-public communications)? If so, please provide a description.*
-	- The data is protected by confidentiality rules that prevent individuals from being identified.
+	- The data is protected by confidentiality rules that prevent individuals from being identified. 
 12. *Does the dataset contain data that, if viewed directly, might be offensive, insulting, threatening, or might otherwise cause anxiety? If so, please describe why.*
 	- No
 13. *Does the dataset identify any sub-populations (for example, by age, gender)? If so, please describe how these subpopulations are identified and provide a description of their respective distributions within the dataset.*
-	- Yes, the dataset contains sub-populations by geographical location, family type, etc. The distribution is even.
+	- No 
 14. *Is it possible to identify individuals (that is, one or more natural persons), either directly or indirectly (that is, in combination with other data) from the dataset? If so, please describe how.*
-	- NO
+	- No
 15. *Does the dataset contain data that might be considered sensitive in any way (for example, data that reveals race or ethnic origins, sexual orientations, religious beliefs, political opinions or union memberships, or locations; financial or health data; biometric or genetic data; forms of government identification, such as social security numbers; criminal history)? If so, please provide a description.*
-	- The dataset contain income statistics of different groups of Canadians which might be considered sensitive.
+	- The dataset contains income statistics over different social class of the United States. This data may be considered sensitive. 
 16. *Any other comments?*
-	- NO
+	- No
 
 **Collection process**
 
 1. *How was the data associated with each instance acquired? Was the data directly observable (for example, raw text, movie ratings), reported by subjects (for example, survey responses), or indirectly inferred/derived from other data (for example, part-of-speech tags, model-based guesses for age or language)? If the data was reported by subjects or indirectly inferred/derived from other data, was the data validated/verified? If so, please describe how.*
-	- The data associated with each instance in the Canadian Income Survey (CIS) is acquired through a combination of direct reporting by subjects and the merging of data from the Labour Force Survey (LFS) and tax records. Subjects provide information on various aspects such as labour market activity, income sources, household characteristics, and geographic details.
+	- The data associated with each instances in the WID report, where the data was collected through survey responses directly by the subjects. The WID gathers information from outsources such as national annual reports of the income inequality worldwide and analyze it based on those reports. 
 2. *What mechanisms or procedures were used to collect the data (for example, hardware apparatuses or sensors, manual human curation, software programs, software APIs)? How were these mechanisms or procedures validated?*
-	- Data collection mechanisms include survey questionnaires for direct reporting by subjects, administrative records for tax data, and automated data processing systems for merging and validating datasets. Validation processes ensure data accuracy and consistency across sources.
+	- Surveys and national accounts data are collected using questionnaires (both paper-based and electronic), interviews, and in some cases, digital entry forms. Countries may use computer-assisted personal interviewing (CAPI) systems or computer-assisted telephone interviewing (CATI) systems.
 3. *If the dataset is a sample from a larger set, what was the sampling strategy (for example, deterministic, probabilistic with specific sampling probabilities)?*
-	- The CIS dataset is a sample drawn from the larger population of Canadians. The sampling strategy is probabilistic, designed to ensure representativeness across demographic groups and geographic regions. Sampling methods are validated to ensure robustness and reliability of survey estimates.
+	- Most income and wealth surveys use probabilistic sampling methods. This involves selecting a random, representative sample of the population, where every individual has a known probability of being included. Common techniques include stratified sampling, cluster sampling, and multi stage sampling. 
 4. *Who was involved in the data collection process (for example, students, crowdworkers, contractors) and how were they compensated (for example, how much were crowdworkers paid)?*
-	- Data collection involves collaboration among various stakeholders including government agencies responsible for conducting surveys, data collection personnel, and statistical experts. Data collection staff are trained to administer surveys and ensure compliance with ethical standards.
+	- For national accounts and survey data, national statistical agencies typically carry out the collection of national accounts and survey data. Employees of these agencies are usually civil servants or government employees. In some cases, especially for specific surveys, external contractors or dedicated survey firms might be employed.
 5. *Over what timeframe was the data collected? Does this timeframe match the creation timeframe of the data associated with the instances (for example, recent crawl of old news articles)? If not, please describe the timeframe in which the data associated with the instances was created.*
-	- The timeframe for data collection typically spans from January to June of the year following the reference year. This timeframe aligns with the reference period for income and demographic information collected through surveys and tax records.
+	- The data are usually collected annually or every few years, depending on the specific survey or national account reporting requirements. The data reflects economic activities within the specific year or period they were collected.
 6. *Were any ethical review processes conducted (for example, by an institutional review board)? If so, please provide a description of these review processes, including the outcomes, as well as a link or other access point to any supporting documentation.*
-	- Ethical review processes are conducted by institutional review boards to ensure compliance with privacy regulations and ethical guidelines. These processes evaluate the survey methodology, data collection procedures, and potential risks to participants.
+	- The dataset does not provide any explicit details regarding any ethical review processes. 
 7. *Did you collect the data from the individuals in question directly, or obtain it via third parties or other sources (for example, websites)?*
-	- Data collection is primarily conducted directly from individuals through survey responses. However, tax data is obtained indirectly from government agencies responsible for tax administration and compliance.
+	- The dataset was collected directly from individuals through survey responses.
 8. *Were the individuals in question notified about the data collection? If so, please describe (or show with screenshots or other information) how notice was provided, and provide a link or other access point to, or otherwise reproduce, the exact language of the notification itself.*
-	- Participants are notified about data collection through informed consent processes outlined in survey questionnaires and tax forms. Information about data usage, confidentiality, and rights is provided to participants prior to data collection.
+	- For surveys, individuals are typically notified about the data collection directly at the time of the survey. The notification informs participants about the purpose of the survey, how the data will be used, and reassures them of confidentiality and voluntary participation.
 9. *Did the individuals in question consent to the collection and use of their data? If so, please describe (or show with screenshots or other information) how consent was requested and provided, and provide a link or other access point to, or otherwise reproduce, the exact language to which the individuals consented.*
-	- Participants consent to the collection and use of their data by voluntarily completing survey questionnaires and tax forms. Consent language explicitly outlines the purposes of data collection, confidentiality measures, and participant rights.
+	- For survey data, which often involves direct interaction with respondents, informed consent is usually obtained at the beginning of the survey process. Respondents are informed about the purpose of the survey, how their data will be used, and their rights, including the right to withdraw from the survey at any time.
 10. *If consent was obtained, were the consenting individuals provided with a mechanism to revoke their consent in the future or for certain uses? If so, please provide a description, as well as a link or other access point to the mechanism (if appropriate).*
-	- Consent mechanisms allow participants to revoke their consent at any time by contacting survey administrators or tax authorities. Participants are informed about their rights to withdraw consent and the implications of doing so.
+	- The dataset does not provide specfic information regarding to given mechanism. However, individuals participating in surveys usually have the option to withdraw from the survey at any time, and this option is typically explained at the time of obtaining consent. 
 11. *Has an analysis of the potential impact of the dataset and its use on data subjects (for example, a data protection impact analysis) been conducted? If so, please provide a description of this analysis, including the outcomes, as well as a link or other access point to any supporting documentation.*
-	- An analysis of the potential impact of the dataset on data subjects is conducted to assess risks and mitigate harms. This includes evaluating privacy risks, confidentiality protections, and potential biases in data collection and analysis.
+	- The research institution tend to assess the impact of the data collection on the participants. This includes considering privacy concerns, the risk of data breaches, and potential misuse of data.
 12. *Any other comments?*
-	- NO
+	- No
 
 **Preprocessing/cleaning/labeling**
 
 1. *Was any preprocessing/cleaning/labeling of the data done (for example, discretization or bucketing, tokenization, part-of-speech tagging, SIFT feature extraction, removal of instances, processing of missing values)? If so, please provide a description. If not, you may skip the remaining questions in this section.*
-	-  Yes. Instances that are not related to the objective of this report is removed. Missing values are removed. Variables were renamed to better analyze the data.
+	- No
 2. *Was the "raw" data saved in addition to the preprocessed/cleaned/labeled data (for example, to support unanticipated future uses)? If so, please provide a link or other access point to the "raw" data.*
-	-Yes, the raw data is in the inputs folder called "income.csv". It can be obtained from the repository's inputs folder or the link: 
-
-https://open.canada.ca/data/en/dataset/b06716c0-eea7-4267-87b6-4faaa2679f22.
-	
+	- No
 3. *Is the software that was used to preprocess/clean/label the data available? If so, please provide a link or other access point.*
-	- R studio software and packages associated with it were used to clean the data.
+	- No
 4. *Any other comments?*
-	- NO
-
+	- No
+	
 **Uses**
 
 1. *Has the dataset been used for any tasks already? If so, please provide a description.*
-	- The Canadian Income Survey (CIS) dataset has been utilized for various research and analytical tasks related to income distribution, poverty analysis, labor market dynamics, and socioeconomic policy evaluation. Researchers have employed the dataset to investigate trends in income inequality, assess the effectiveness of social welfare programs, and examine the impact of economic policies on household income levels.
+	- No
 2. *Is there a repository that links to any or all papers or systems that use the dataset? If so, please provide a link or other access point.*
-	- NO
+	- No
 3. *What (other) tasks could the dataset be used for?*
-	- The dataset holds potential for a wide range of tasks beyond its current applications. Future research endeavors could explore topics such as intergenerational income mobility, the gender pay gap, regional disparities in income distribution, and the relationship between education and income attainment. Additionally, the dataset could be leveraged for comparative studies across countries or regions to gain insights into global income inequality trends.
+	- This dataset could be used for analyzing the income inequality within the United States or comparing with different country.
 4. *Is there anything about the composition of the dataset or the way it was collected and preprocessed/cleaned/labeled that might impact future uses? For example, is there anything that a dataset consumer might need to know to avoid uses that could result in unfair treatment of individuals or groups (for example, stereotyping, quality of service issues) or other risks or harms (for example, legal risks, financial harms)? If so, please provide a description. Is there anything a dataset consumer could do to mitigate these risks or harms?*
-	- While the CIS dataset provides valuable insights into income dynamics and socioeconomic trends, users should be mindful of certain considerations. For instance, the dataset's sampling design and weighting procedures may impact the generalizability of findings to the entire Canadian population. Users should also be cautious about drawing causal inferences from observational data and consider potential confounding variables that could influence the relationships observed in the dataset.
+	- The dataset may have sampling biases. The survey data may not perfectly represent the entire population, especially if certain groups are underrepresented due to non-response or accessibility issues. This could lead to skewed analyses and potentially unfair conclusions or policies based on this incomplete picture. So, researchers and policymakers using the data should apply statistical techniques to adjust the sampling biases. 
 5. *Are there tasks for which the dataset should not be used? If so, please provide a description.*
-	- NO
+	- No
 6. *Any other comments?*
-	- NO
+	- No
 
 **Distribution**
 
 1. *Will the dataset be distributed to third parties outside of the entity (for example, company, institution, organization) on behalf of which the dataset was created? If so, please provide a description.*
-	- Yes, the dataset will be made available to third parties outside of the entity. It will be openly accessible to individuals, organizations, researchers, policymakers, and any other interested parties.
+	- Yes, the dataset will be distributed to third parties outside of the entity. It will be open to individuals, researches, distribution, policy makers, and to other parties.  
 2. *How will the dataset be distributed (for example, tarball on website, API, GitHub)? Does the dataset have a digital object identifier (DOI)?*
-	- DOI: https://doi.org/10.25318/1110019201-eng
+	- Data can be downloaded directly from the WID.world website, often in formats like CSV or Excel, which are useful for researchers and policymakers. WID.world might not necessarily assign a DOI to the entire database.
 3. *When will the dataset be distributed?*
-	- he dataset will be distributed on May 5th, 2025.
+	- Every annual season when they will use the data to compare their model. 
 4. *Will the dataset be distributed under a copyright or other intellectual property (IP) license, and/or under applicable terms of use (ToU)? If so, please describe this license and/ or ToU, and provide a link or other access point to, or otherwise reproduce, any relevant licensing terms or ToU, as well as any fees associated with these restrictions.*
-	- The dataset will be distributed under the MIT License.
+	- No
 5. *Have any third parties imposed IP-based or other restrictions on the data associated with the instances? If so, please describe these restrictions, and provide a link or other access point to, or otherwise reproduce, any relevant licensing terms, as well as any fees associated with these restrictions.*
-	- The Open Government License of Canada(https://open.canada.ca/en/open-government-licence-canada)
+	- No
 6. *Do any export controls or other regulatory restrictions apply to the dataset or to individual instances? If so, please describe these restrictions, and provide a link or other access point to, or otherwise reproduce, any supporting documentation.*
-	- NO
+	- No
 7. *Any other comments?*
-	- NO
+	- No
 
 **Maintenance**
 
 1. *Who will be supporting/hosting/maintaining the dataset?*
-	- Canadian government
+	- The World Inequality Database (WID) is supported, hosted, and maintained by a collaborative network of economists and researchers primarily affiliated with the Paris School of Economics, along with other academic institutions worldwide.
 2. *How can the owner/curator/manager of the dataset be contacted (for example, email address)?*
-	- The email address is provided in the github. The email address of the original dataset is infostats@statcan.gc.ca.
+	- Directly contact info@wid.world.
 3. *Is there an erratum? If so, please provide a link or other access point.*
-	- There is no erratum.
+	- There is no erratum. 
 4. *Will the dataset be updated (for example, to correct labeling errors, add new instances, delete instances)? If so, please describe how often, by whom, and how updates will be communicated to dataset consumers (for example, mailing list, GitHub)?*
-	- The dataset will be updated annually to incorporate new data and correct any errors. 
+	- The dataset will be updated annually to correct any errors. 
 5. *If the dataset relates to people, are there applicable limits on the retention of the data associated with the instances (for example, were the individuals in question told that their data would be retained for a fixed period of time and then deleted)? If so, please describe these limits and explain how they will be enforced.*
-	- There are no specific limits on the retention of individual data within the dataset.
+	- There are no specific limits on the retention of individual data within the dataset. 
 6. *Will older versions of the dataset continue to be supported/hosted/maintained? If so, please describe how. If not, please describe how its obsolescence will be communicated to dataset consumers.*
-	- Older versions of the dataset will be retained for reference purposes. However, ongoing updates will be provided annually to ensure the dataset remains current. Any obsolete versions will be clearly marked and archived in the repository.
+	- Older versions of the dataset are generally kept accessible to ensure that researchers can replicate past analyses and compare trends over time. This is crucial for economic studies where longitudinal data consistency is necessary.
 7. *If others want to extend/augment/build on/contribute to the dataset, is there a mechanism for them to do so? If so, please provide a description. Will these contributions be validated/verified? If so, please describe how. If not, why not? Is there a process for communicating/distributing these contributions to dataset consumers? If so, please provide a description.*
-	- Contributions to the dataset are not currently solicited or accepted. The dataset is maintained by the original owner, and any updates or modifications will be managed internally.
+	- The guide doesn't not include a explicit mechanism for others to extend to the dataset. 
 8. *Any other comments?*
-	- NO
-
+	- No
 
 \newpage
 
 # References
+

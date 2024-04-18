@@ -1,5 +1,5 @@
 ---
-title: "Exploring Income Inequality in US after and before financial crises: Analysis"
+title: "Exploring Income Inequality in US before and after financial crises: Analysis"
 subtitle: "Insights from 2002 to 2019"
 author: "Dong Jun Yoon"
 thanks: "Code and data are available at: https://github.com/DJY1231/Exploring-Income-Inequality-in-US.git"
